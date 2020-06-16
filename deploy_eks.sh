@@ -3,9 +3,9 @@
 # Usage: ./deploy_eks.sh [cluster name] [instance type] [cluster size]
 # Reference: https://eksworkshop.com/
 
-export EKS_CLUSTER_NAME = $1
-export EKS_INSTANCE_TYPE = $2
-export EKS_CLUSTER_SIZE = $3
+export EKS_CLUSTER_NAME=$1
+export EKS_INSTANCE_TYPE=$2
+export EKS_CLUSTER_SIZE=$3
 
 # Install Kubernetes tools
 sudo curl --silent --location -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
