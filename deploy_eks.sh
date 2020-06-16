@@ -85,3 +85,47 @@ kubectl get nodes
 STACK_NAME=$(eksctl get nodegroup --cluster $EKS_CLUSTER_NAME-eksctl -o json | jq -r '.[].StackName')
 ROLE_NAME=$(aws cloudformation describe-stack-resources --stack-name $STACK_NAME | jq -r '.StackResources[] | select(.ResourceType=="AWS::IAM::Role") | .PhysicalResourceId')
 echo "export ROLE_NAME=${ROLE_NAME}" | tee -a ~/.bash_profile
+
+# Install Kubeflow
+curl --silent --location "https://github.com/kubeflow/kfctl/releases/download/v1.0.1/kfctl_v1.0.1-0-gf3edb9b_linux.tar.gz" | tar xz -C /tmp
+sudo mv -v /tmp/kfctl /usr/local/bin
+
+# Export environment variables needed for Kubeflow install
+cat << EoF > kf-install.sh
+export AWS_CLUSTER_NAME="${EKS_CLUSTER_NAME}-eksctl"
+export KF_NAME=\${AWS_CLUSTER_NAME}
+
+export BASE_DIR=/home/ec2-user/environment
+export KF_DIR=\${BASE_DIR}/\${KF_NAME}
+
+# export CONFIG_URI="https://raw.githubusercontent.com/kubeflow/manifests/v1.0-branch/kfdef/kfctl_aws_cognito.v1.0.1.yaml"
+export CONFIG_URI="https://raw.githubusercontent.com/kubeflow/manifests/v1.0-branch/kfdef/kfctl_aws.v1.0.1.yaml"
+
+export CONFIG_FILE=\${KF_DIR}/kfctl_aws.yaml
+EoF
+source kf-install.sh
+
+mkdir -p ${KF_DIR}
+cd ${KF_DIR}
+
+wget -O kfctl_aws.yaml $CONFIG_URI
+
+sed -i '/region: us-west-2/ a \      enablePodIamPolicy: true' ${CONFIG_FILE}
+
+sed -i -e 's/kubeflow-aws/'"$AWS_CLUSTER_NAME"'/' ${CONFIG_FILE}
+sed -i "s@us-west-2@$AWS_REGION@" ${CONFIG_FILE}
+
+sed -i "s@roles:@#roles:@" ${CONFIG_FILE}
+sed -i "s@- eksctl-$AWS_CLUSTER_NAME-nodegroup-ng-a2-NodeInstanceRole-xxxxxxx@#- eksctl-devkfworkshop-eksctl-nodegroup-ng-a2-NodeInstanceRole-xxxxxxx@" ${CONFIG_FILE}
+
+curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
+chmod +x aws-iam-authenticator
+sudo mv aws-iam-authenticator /usr/local/bin
+
+cd ${KF_DIR}
+kfctl apply -V -f ${CONFIG_FILE}
+
+kubectl -n kubeflow get all
+
+kubectl port-forward svc/istio-ingressgateway -n istio-system 8080:80
+
