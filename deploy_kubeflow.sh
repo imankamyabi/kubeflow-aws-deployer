@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Usage: ./deploy_eks.sh [cluster name] [instance type] [cluster size]
+# Usage: ./deploy_kubeflow.sh [cluster name] [instance type] [cluster size]
 # Reference: https://eksworkshop.com/
 
 export EKS_CLUSTER_NAME="${1}"

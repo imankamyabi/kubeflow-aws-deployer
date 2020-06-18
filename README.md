@@ -1,15 +1,48 @@
 # Kubeflow AWS Deployer
-Shell script to create an EKS cluster and deploy Kubeflow to it
+Shell script to create an EKS cluster and deploy Kubeflow to it. 
 
+Majority of this script is taken from code snippets at eksworkshop.com and for the purpose of quickly spinning up Cloudflow by running a single script rather than running individual shell commands.
 
-Usage:
+Recommended to run in Cloud9 workspace, t3.small instance type and "Amazon Linux" platform.
+
+**Usage:**
 ```bash
-# Download the script
-curl --silent https://raw.githubusercontent.com/imankamyabi/kubeflow-aws-deployer/master/deploy_eks.sh --output deploy_eks.sh
-# Run:
-./deploy_eks.sh [cluster name] [instance type] [cluster size]
-# Example: ./deploy_eks.sh devkfworkshop m5.large 6
+./deploy_kubeflow.sh [cluster name] [instance type] [cluster size]
+# Example: ./deploy_kubeflow.sh hellokf m5.large 6
 ```
 
-Author: Iman Kamyabi
-Reference: https://eksworkshop.com/
+
+## Step for deploying Kubeflow to AWS using Cloud9:
+
+1- Set up Cloud9 workspace: https://eksworkshop.com/020_prerequisites/workspace/
+
+2- Create IAM role for Cloud9 workspace: https://eksworkshop.com/020_prerequisites/iamrole/
+
+3- Attach the IAM role to the Cloud9 instance: https://eksworkshop.com/020_prerequisites/ec2instance/
+
+4- Start Cloud9 IDE, open a terminal and download the script.
+```bash
+curl --silent https://raw.githubusercontent.com/imankamyabi/kubeflow-aws-deployer/master/deploy_kubeflow.sh --output deploy_kubeflow.sh
+```
+
+5- Run the script:
+```bash
+./deploy_kubeflow.sh [cluster name] [instance type] [cluster size]
+```
+For example:
+```bash
+./deploy_kubeflow.sh hellokf m5.large 6
+```
+
+6- Click tools > Preview > Preview Running Application to open the dashboard.
+
+
+## Delete the cluster:
+To delete the EKS Cluster run the following command:
+```bash
+eksctl delete cluster --name=[cluster name]-eksctl
+```
+for example:
+```bash 
+eksctl delete cluster --name=hellokf-eksctl
+```
