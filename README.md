@@ -20,17 +20,19 @@ Recommended to run in Cloud9 workspace, t3.small instance type and "Amazon Linux
 
 3- Attach the IAM role to the Cloud9 instance: https://eksworkshop.com/020_prerequisites/ec2instance/
 
-4- Start Cloud9 IDE, open a terminal and download the script.
+4- Navigate to Cloud9 environment > Prefrences > AWS Settings > Turn off AWS managed temporary credentials.
+
+5- Start Cloud9 IDE, open a terminal and download the script.
 ```bash
 curl --silent https://raw.githubusercontent.com/imankamyabi/kubeflow-aws-deployer/master/deploy_kubeflow.sh --output deploy_kubeflow.sh
 ```
 
-5- Change the script permission to be executable:
+6- Change the script permission to be executable:
 ```bash
 chmod +x ./deploy_kubeflow.sh
 ```
 
-6- Run the script:
+7- Run the script:
 ```bash
 ./deploy_kubeflow.sh [cluster name] [instance type] [cluster size]
 ```
@@ -39,7 +41,7 @@ For example:
 ./deploy_kubeflow.sh hellokf m5.large 6
 ```
 
-7- Click tools > Preview > Preview Running Application to open the dashboard.
+8- Click tools > Preview > Preview Running Application to open the dashboard.
 
 
 ## Delete the cluster:
