@@ -25,7 +25,12 @@ Recommended to run in Cloud9 workspace, t3.small instance type and "Amazon Linux
 curl --silent https://raw.githubusercontent.com/imankamyabi/kubeflow-aws-deployer/master/deploy_kubeflow.sh --output deploy_kubeflow.sh
 ```
 
-5- Run the script:
+5- Change the script permission to be executable:
+```bash
+chmod +x ./deploy_kubeflow.sh
+```
+
+6- Run the script:
 ```bash
 ./deploy_kubeflow.sh [cluster name] [instance type] [cluster size]
 ```
@@ -34,7 +39,7 @@ For example:
 ./deploy_kubeflow.sh hellokf m5.large 6
 ```
 
-6- Click tools > Preview > Preview Running Application to open the dashboard.
+7- Click tools > Preview > Preview Running Application to open the dashboard.
 
 
 ## Delete the cluster:
