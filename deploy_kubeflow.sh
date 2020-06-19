@@ -39,7 +39,7 @@ aws configure get default.region
 # aws sts get-caller-identity --query Arn | grep kfworkshop-admin -q && echo "IAM role valid" || echo "IAM role NOT valid"
 
 # SSH
-ssh-keygen -b 2048 -t rsa -f /tmp/sshkey -q -N ""
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
 aws ec2 import-key-pair --key-name "${EKS_CLUSTER_NAME}" --public-key-material file://~/.ssh/id_rsa.pub
 
 # KMS
