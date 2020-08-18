@@ -1,7 +1,7 @@
 # Kubeflow AWS Deployer
 Shell script to create an EKS cluster and deploy Kubeflow to it. 
 
-Majority of this script is taken from code snippets at eksworkshop.com and for the purpose of quickly spinning up Cloudflow by running a single script rather than running individual shell commands.
+Majority of this script is taken from code snippets at eksworkshop.com and for the purpose of quickly spinning up KubeFlow by running a single script rather than running individual shell commands.
 
 Recommended to run in Cloud9 workspace, t3.small instance type and "Amazon Linux" platform.
 
